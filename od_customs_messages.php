@@ -24,4 +24,11 @@ class Od_customs_messages extends Module
         $this->description = $this->l('Module to show message on shipping checkout.');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
+
+    public function install()
+    {
+        return parent::install()
+            && $this->registerHook('actionFrontControllerSetMedia');
+    }
+
 }
