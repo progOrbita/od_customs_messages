@@ -31,4 +31,9 @@ class Od_customs_messages extends Module
             && $this->registerHook('actionFrontControllerSetMedia');
     }
 
+    public function uninstall()
+    {
+        return parent::uninstall();
+    }
+
 }
