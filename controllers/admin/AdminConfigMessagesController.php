@@ -60,6 +60,21 @@ class AdminConfigMessagesController extends ModuleAdminController
     }
 
     /**
+     * Get fields values of helper form of configuration
+     * 
+     * @return array
+     */
+    private function getFieldsValues(): array
+    {
+        foreach ($this->fields_values as $key => $value) {
+            $data[$key] = Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', (int) $key, null, null, '');
+        }
+
+        $result['_OD_SEND_CUSTOMS_MESSAGES_'] = $data;
+        return $result;
+    }
+
+    /**
      * Post process
      * 
      * @return string
