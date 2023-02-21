@@ -38,4 +38,27 @@ class AdminConfigMessagesController extends ModuleAdminController
         return $this->updateFieldsValue();
     }
 
+    /**
+     * Update fields value
+     * 
+     * @return string error|confirmation
+     */
+    public function updateFieldsValue(): string
+    {
+        $postData = [];
+        foreach ($this->fields_values as $key => $value) {
+            if (Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $key) == Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key)) {
+                continue;
+            }
+
+            $postData[$key] = Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key);
+            $this->fields_values[$key]['msg'] = $postData[$key];
+        }
+
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_', $postData)) {
+            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        }
+
+        return $this->module->displayConfirmation($this->module->l('Actualización hecha correctamente'));
+    }
 }
