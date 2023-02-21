@@ -24,6 +24,41 @@ class AdminConfigMessagesController extends ModuleAdminController
         }
     }
 
+    public function displayForm()
+    {
+        $form = [[
+            'form' => [
+                'legend' => [
+                    'title' => $this->module->l('Show shipping message')
+                ],
+                'input' => [
+                    [
+                        'type' => 'textarea',
+                        'label' => $this->module->l('Message:'),
+                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_',
+                        'autoload_rte' => true,
+                        'lang' => true,
+                        'row' => 100,
+                    ]
+                ],
+                'submit' => [
+                    'title' => $this->module->l('Guardar'),
+                    'class' => 'btn btn-default pull-right'
+                ],
+            ],
+        ]];
+
+        $helper = new HelperForm();
+        $helper->default_form_language = 1;
+        $helper->languages = AdminController::getLanguages();
+        $helper->token = $this->token;
+        $helper->currentIndex = AdminController::$currentIndex . '&' . http_build_query(['configure' => $this->module->name]);
+        $helper->submit_action = 'submit' . $this->module->name;
+        $helper->fields_value = $this->getFieldsValues();
+
+        return $helper->generateForm($form);
+    }
+
     /**
      * Post process
      * 
