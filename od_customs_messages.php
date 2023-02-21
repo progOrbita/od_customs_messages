@@ -36,4 +36,9 @@ class Od_customs_messages extends Module
         return parent::uninstall();
     }
 
+    public function getContent()
+    {
+        Tools::redirectAdmin($this->context->link->getAdminLink('AdminConfigMessages'));
+    }
+
 }
