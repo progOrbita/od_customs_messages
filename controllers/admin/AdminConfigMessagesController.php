@@ -24,4 +24,18 @@ class AdminConfigMessagesController extends ModuleAdminController
         }
     }
 
+    /**
+     * Post process
+     * 
+     * @return string
+     */
+    public function postProcessForm(): string
+    {
+        if (!Tools::isSubmit('submit' . $this->module->name)) {
+            return '';
+        }
+
+        return $this->updateFieldsValue();
+    }
+
 }
