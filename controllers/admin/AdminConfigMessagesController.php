@@ -24,6 +24,15 @@ class AdminConfigMessagesController extends ModuleAdminController
         }
     }
 
+    public function initContent()
+    {
+        parent::initContent();
+        $post = $this->postProcessForm();
+        $this->context->smarty->assign([
+            'content' => $post . $this->displayForm()
+        ]);
+    }
+
     public function displayForm()
     {
         $form = [[
