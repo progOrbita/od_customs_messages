@@ -43,5 +43,9 @@ class Od_customs_messages extends Module
 
     public function hookActionFrontControllerSetMedia()
     {
+        if ($this->context->controller->php_self != "order" || $this->context->cart->id_lang < 0 || !$this->context->cart->id_address_delivery) {
+            return;
+        }
+
     }
 }
