@@ -31,9 +31,10 @@ class Od_customs_messages extends Module
             && $this->registerHook('actionFrontControllerSetMedia');
     }
 
-    public function uninstall()
+    public function uninstall():bool
     {
-        return parent::uninstall();
+        return parent::uninstall()
+        && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_');
     }
 
     public function getContent()
