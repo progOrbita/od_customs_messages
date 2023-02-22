@@ -47,5 +47,16 @@ class Od_customs_messages extends Module
             return;
         }
 
+        $addr = new Address($this->context->cart->id_address_delivery, $this->context->cart->id_lang);
+        if ($addr->city == "Canarias" || $addr->city == "Melilla" || $addr->city == "Ceuta"){
+            $this->context->controller->registerJavascript(
+                'od_send_email-javascript',
+                $this->_path . 'views/js/od_customs_messages.js',
+                [
+                    'server' => 'remote',
+                    'position' => 'bottom',
+                    'priority' => 1000,
+                ]
+            );
     }
 }
