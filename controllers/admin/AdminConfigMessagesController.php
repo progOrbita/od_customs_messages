@@ -33,7 +33,12 @@ class AdminConfigMessagesController extends ModuleAdminController
         ]);
     }
 
-    public function displayForm()
+    /**
+     * function to display helperForm
+     * 
+     * @return string
+     */
+    public function displayForm():string
     {
         $form = [[
             'form' => [

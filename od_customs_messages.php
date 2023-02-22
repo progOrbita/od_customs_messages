@@ -25,7 +25,7 @@ class Od_customs_messages extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
 
-    public function install()
+    public function install():bool
     {
         return parent::install()
             && $this->registerHook('actionFrontControllerSetMedia');
