@@ -41,4 +41,7 @@ class Od_customs_messages extends Module
         Tools::redirectAdmin($this->context->link->getAdminLink('AdminConfigMessages'));
     }
 
+    public function hookActionFrontControllerSetMedia()
+    {
+    }
 }
