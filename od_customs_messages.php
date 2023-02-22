@@ -58,5 +58,11 @@ class Od_customs_messages extends Module
                     'priority' => 1000,
                 ]
             );
+
+            Media::addJsDef([
+                'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang)
+            ]);
+        }
+        
     }
 }
