@@ -114,7 +114,7 @@ class AdminConfigMessagesController extends ModuleAdminController
             $this->fields_values[$key]['msg'] = $postData[$key];
         }
 
-        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_', $postData)) {
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_', $postData, true)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
