@@ -1,4 +1,16 @@
+if ($('#checkout-delivery-step').hasClass('js-current-step') || $('#checkout-payment-step').hasClass('js-current-step')) {
+    addCustomMessage();
+    if ($('#checkout-delivery-step').hasClass('js-current-step')) {
+        $('.od_custom_message').css("display", "");
+    }
+}
 
+$(document).on("click", ".step-edit", function () {
+    addCustomMessage();
+    if ($('#checkout-delivery-step').hasClass('js-current-step')) {
+        $('.od_custom_message').css("display", "");
+    }
+})
 
 /**
  * function to add the custom message
