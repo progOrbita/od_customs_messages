@@ -111,11 +111,12 @@ class AdminConfigMessagesController extends ModuleAdminController
     {
         $postData = [];
         foreach ($this->fields_values as $key => $value) {
-            if (Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $key) == Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key)) {
+            $postDataVal=Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key);
+            if (Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $key) ==  $postDataVal) {
                 continue;
             }
 
-            $postData[$key] = Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key);
+            $postData[$key] =  $postDataVal;
             $this->fields_values[$key]['msg'] = $postData[$key];
         }
 
