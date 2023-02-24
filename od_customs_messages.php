@@ -56,8 +56,13 @@ class Od_customs_messages extends Module
 
             return $this->display(__FILE__, 'od_customs_messages.tpl');
         }
+
+        if ($this->validateAddress('ZONES', $addr) || $this->validateAddress('COUNTRIES', $addr)) {
+            $this->context->smarty->assign([
                 'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang)
             ]);
+
+            return $this->display(__FILE__, 'od_customs_messages.tpl');
         }
     }
 
