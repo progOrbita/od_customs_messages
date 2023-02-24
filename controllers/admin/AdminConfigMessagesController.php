@@ -64,6 +64,15 @@ class AdminConfigMessagesController extends ModuleAdminController
                             'name' => 'name'
                         ]
                     ],
+                    [
+                        'type' => 'checkbox',
+                        'label'   => $this->module->l('States'),
+                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_STATES_',
+                        'values' => [
+                            'query' => $this->getOptionsCheckBox('state'),
+                            'id' => 'id',
+                            'name' => 'name'
+                        ],
                     ]
                 ],
                 'submit' => [
@@ -97,6 +106,10 @@ class AdminConfigMessagesController extends ModuleAdminController
 
         $result['_OD_SEND_CUSTOMS_MESSAGES_'] = $data;
         foreach ($this->getFieldsCheckBoxValue('ZONES') as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        foreach ($this->getFieldsCheckBoxValue('STATES') as $key => $value) {
             $result[$key] = $value;
         }
 
@@ -163,6 +176,11 @@ class AdminConfigMessagesController extends ModuleAdminController
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
+        $states = $this->updateCheckboxValue('STATES');
+        if (!empty($states) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)) {
+            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        }
+
         return $this->module->displayConfirmation($this->module->l('Actualización hecha correctamente'));
     }
 
@@ -183,6 +201,14 @@ class AdminConfigMessagesController extends ModuleAdminController
                     $res[] = ['id' => $value['id_zone'], 'name' => $value['name']];
                 }
 
+                break;
+            case 'state':
+                $state = (State::getStatesByIdCountry(6));
+                foreach ($state as $key => $value) {
+                    $res[] = ['id' => $value['id_state'], 'name' => $value['name']];
+                }
+
+                break;
                 break;
             default:
                 break;
