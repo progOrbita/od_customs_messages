@@ -228,6 +228,16 @@ class AdminConfigMessagesController extends ModuleAdminController
                 }
 
                 break;
+            case 'country':
+                $country = (Country::getCountries($this->context->language->id));
+                foreach ($country as $key => $value) {
+                    if ($value['id_country'] == 6) {
+                        continue;
+                    }
+
+                    $res[] = ['id' => $value['id_country'], 'name' => $value['name']];
+                }
+
                 break;
             default:
                 break;
