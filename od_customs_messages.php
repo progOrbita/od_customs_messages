@@ -54,4 +54,40 @@ class Od_customs_messages extends Module
             ]);
         }
     }
+
+    /**
+     * function to validate fields of address
+     * 
+     * @param string $param ZONES|STATES|COUNTRIES
+     * @param object $addr Address
+     * 
+     * @return bool
+     */
+    private function validateAddress(string $param, object $addr): bool
+    {
+        $datas = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_'));
+        foreach ($datas as $data) {
+            switch ($param) {
+                case 'ZONES':
+                    if ($data == $addr->getZoneById($addr->id)) {
+                        return true;
+                    }
+                    break;
+                case 'COUNTRIES':
+                    if ($data == $addr->id_country) {
+                        return true;
+                    }
+                    break;
+                case 'STATES':
+                    if ($data == $addr->id_state) {
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return false;
+    }
 }
