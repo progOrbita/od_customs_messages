@@ -66,6 +66,16 @@ class AdminConfigMessagesController extends ModuleAdminController
                     ],
                     [
                         'type' => 'checkbox',
+                        'label'   => $this->module->l('Countries'),
+                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_',
+                        'values' => [
+                            'query' => $this->getOptionsCheckBox('country'),
+                            'id' => 'id',
+                            'name' => 'name'
+                        ],
+                    ],
+                    [
+                        'type' => 'checkbox',
                         'label'   => $this->module->l('States'),
                         'name' => '_OD_SEND_CUSTOMS_MESSAGES_STATES_',
                         'values' => [
