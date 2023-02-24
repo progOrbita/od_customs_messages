@@ -204,6 +204,31 @@ class AdminConfigMessagesController extends ModuleAdminController
     }
 
     /**
+     * function to get check box values of $_GET
+     * 
+     * @param string 'ZONES'|'STATES'|'COUNTRIES'
+     * 
+     * @return string
+     */
+    private function updateCheckboxValue(string $param): string
+    {
+        $dataGet = Tools::getAllValues();
+        $data = '';
+        foreach ($dataGet as $key => $value) {
+            if (strpos($key, '_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__') === false) {
+                continue;
+            }
+
+            $len = strlen('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__');
+            $key = substr($key, $len);
+            $data .= $key . ',';
+        }
+
+        $data = substr($data, 0, -1);
+        return $data;
+    }
+
+    /**
      * create an array for options of the checkbox
      * 
      * @param string
