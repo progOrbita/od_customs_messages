@@ -123,6 +123,10 @@ class AdminConfigMessagesController extends ModuleAdminController
             $result[$key] = $value;
         }
 
+        foreach ($this->getFieldsCheckBoxValue('COUNTRIES') as $key => $value) {
+            $result[$key] = $value;
+        }
+
         return $result;
     }
 
