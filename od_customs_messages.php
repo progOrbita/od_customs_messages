@@ -49,7 +49,13 @@ class Od_customs_messages extends Module
     public function hookDisplayBeforeCarrier()
     {
         $addr = new Address($this->context->cart->id_address_delivery, $this->context->cart->id_lang);
+        if ($addr->id_country == 6 && $this->validateAddress('STATES', $addr)) {
+            $this->context->smarty->assign([
+                'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang)
+            ]);
 
+            return $this->display(__FILE__, 'od_customs_messages.tpl');
+        }
                 'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang)
             ]);
         }
