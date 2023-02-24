@@ -25,14 +25,14 @@ class Od_customs_messages extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
 
-    public function install():bool
+    public function install(): bool
     {
         return parent::install()
             && $this->registerHook('actionFrontControllerSetMedia')
             && $this->registerHook('displayBeforeCarrier');
     }
 
-    public function uninstall():bool
+    public function uninstall(): bool
     {
         return parent::uninstall()
             && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_')

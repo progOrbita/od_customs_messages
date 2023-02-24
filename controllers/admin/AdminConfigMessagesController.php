@@ -16,7 +16,7 @@ class AdminConfigMessagesController extends ModuleAdminController
      * 
      * @return void
      */
-    private function buildFieldsValues()
+    private function buildFieldsValues(): void
     {
         $langs = AdminController::getLanguages();
         foreach ($langs as $id => $attr) {
@@ -38,7 +38,7 @@ class AdminConfigMessagesController extends ModuleAdminController
      * 
      * @return string
      */
-    public function displayForm():string
+    public function displayForm(): string
     {
         $form = [[
             'form' => [
@@ -172,7 +172,7 @@ class AdminConfigMessagesController extends ModuleAdminController
     {
         $postData = [];
         foreach ($this->fields_values as $key => $value) {
-            $postDataVal=Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key);
+            $postDataVal = Tools::getValue('_OD_SEND_CUSTOMS_MESSAGES__' . $key);
             if ($this->fields_values[$key]['msg'] ==  $postDataVal) {
                 continue;
             }
