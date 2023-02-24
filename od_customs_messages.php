@@ -46,6 +46,7 @@ class Od_customs_messages extends Module
         Tools::redirectAdmin($this->context->link->getAdminLink('AdminConfigMessages'));
     }
 
+    public function hookDisplayBeforeCarrier()
     {
         $addr = new Address($this->context->cart->id_address_delivery, $this->context->cart->id_lang);
 
