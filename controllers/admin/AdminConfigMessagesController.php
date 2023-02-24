@@ -53,6 +53,17 @@ class AdminConfigMessagesController extends ModuleAdminController
                         'autoload_rte' => true,
                         'lang' => true,
                         'row' => 100,
+                    ],
+                    [
+                        'type' => 'checkbox',
+                        'label'   => $this->module->l('Zones'),
+                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_ZONES_',
+                        'values' => [
+                            'query' => $this->getOptionsCheckBox('zone'),
+                            'id' => 'id',
+                            'name' => 'name'
+                        ]
+                    ],
                     ]
                 ],
                 'submit' => [
@@ -85,7 +96,30 @@ class AdminConfigMessagesController extends ModuleAdminController
         }
 
         $result['_OD_SEND_CUSTOMS_MESSAGES_'] = $data;
+        foreach ($this->getFieldsCheckBoxValue('ZONES') as $key => $value) {
+            $result[$key] = $value;
+        }
+
         return $result;
+    }
+
+    /**
+     * function to get values of checkbox form 
+     * 
+     * @param string 'ZONES'|'STATES'|'COUNTRIES'
+     * 
+     * @return array
+     */
+    private function getFieldsCheckBoxValue(string $param): array
+    {
+        $data = Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_');
+        $data = explode(',', $data);
+        $res = [];
+        foreach ($data as $key) {
+            $res['_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__' . $key] = true;
+        }
+
+        return $res;
     }
 
     /**
@@ -124,6 +158,36 @@ class AdminConfigMessagesController extends ModuleAdminController
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
+        $zone = $this->updateCheckboxValue('ZONES');
+        if (!empty($zone) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zone)) {
+            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        }
+
         return $this->module->displayConfirmation($this->module->l('Actualización hecha correctamente'));
+    }
+
+    /**
+     * create an array for options of the checkbox
+     * 
+     * @param string
+     * 
+     * @return array
+     */
+    public function getOptionsCheckBox(string $param): array
+    {
+        $res = [];
+        switch ($param) {
+            case 'zone':
+                $zone = (Zone::getZones());
+                foreach ($zone as $key => $value) {
+                    $res[] = ['id' => $value['id_zone'], 'name' => $value['name']];
+                }
+
+                break;
+            default:
+                break;
+        }
+
+        return $res;
     }
 }
