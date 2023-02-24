@@ -28,7 +28,8 @@ class Od_customs_messages extends Module
     public function install():bool
     {
         return parent::install()
-            && $this->registerHook('actionFrontControllerSetMedia');
+            && $this->registerHook('actionFrontControllerSetMedia')
+            && $this->registerHook('displayBeforeCarrier');
     }
 
     public function uninstall():bool
