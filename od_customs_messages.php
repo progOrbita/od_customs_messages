@@ -34,7 +34,10 @@ class Od_customs_messages extends Module
     public function uninstall():bool
     {
         return parent::uninstall()
-        && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_');
+            && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_')
+            && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_ZONES_')
+            && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_STATES_')
+            && Configuration::deleteByName('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_');
     }
 
     public function getContent()
