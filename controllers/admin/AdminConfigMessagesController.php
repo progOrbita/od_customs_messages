@@ -185,17 +185,17 @@ class AdminConfigMessagesController extends ModuleAdminController
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
-        $zone = $this->updateCheckboxValue('ZONES');
+        $zone = $this->updateCheckBoxValue('ZONES');
         if (!empty($zone) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zone)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
-        $states = $this->updateCheckboxValue('STATES');
+        $states = $this->updateCheckBoxValue('STATES');
         if (!empty($states) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
-        $countries = $this->updateCheckboxValue('COUNTRIES');
+        $countries = $this->updateCheckBoxValue('COUNTRIES');
         if (!empty($countries) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
@@ -210,7 +210,7 @@ class AdminConfigMessagesController extends ModuleAdminController
      * 
      * @return string
      */
-    private function updateCheckboxValue(string $param): string
+    private function updateCheckBoxValue(string $param): string
     {
         $dataGet = Tools::getAllValues();
         $data = '';
