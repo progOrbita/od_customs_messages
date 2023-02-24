@@ -195,6 +195,11 @@ class AdminConfigMessagesController extends ModuleAdminController
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
+        $countries = $this->updateCheckboxValue('COUNTRIES');
+        if (!empty($countries) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries)) {
+            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        }
+
         return $this->module->displayConfirmation($this->module->l('Actualización hecha correctamente'));
     }
 
