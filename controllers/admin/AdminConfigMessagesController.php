@@ -62,6 +62,12 @@ class AdminConfigMessagesController extends ModuleAdminController
                             'query' => $this->getOptionsCheckBox('zone'),
                             'id' => 'id',
                             'name' => 'name'
+                        ],
+                        'expand' => [
+                            'print_total' => count($this->getOptionsCheckBox('zone')),
+                            'default' => 'show',
+                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
+                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
                         ]
                     ],
                     [
@@ -73,6 +79,12 @@ class AdminConfigMessagesController extends ModuleAdminController
                             'id' => 'id',
                             'name' => 'name'
                         ],
+                        'expand' => [
+                            'print_total' => count($this->getOptionsCheckBox('country')),
+                            'default' => 'show',
+                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
+                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
+                        ]
                     ],
                     [
                         'type' => 'checkbox',
@@ -83,6 +95,12 @@ class AdminConfigMessagesController extends ModuleAdminController
                             'id' => 'id',
                             'name' => 'name'
                         ],
+                        'expand' => [
+                            'print_total' => count($this->getOptionsCheckBox('state')),
+                            'default' => 'show',
+                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
+                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
+                        ]
                     ]
                 ],
                 'submit' => [
