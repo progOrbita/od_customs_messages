@@ -1,5 +1,5 @@
 <!-- Block od_customs_messages -->
-<div id="od_customs_messages">
-  <p name="od_customs_messages">{$msg}</p>
+<div class= "alert alert-warning" id="od_customs_messages">
+  <b>{$msg}</b>
 </div>
 <!-- /Block od_customs_messages -->
