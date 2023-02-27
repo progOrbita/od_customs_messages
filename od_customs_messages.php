@@ -65,11 +65,11 @@ class Od_customs_messages extends Module
      * function to validate fields of address
      * 
      * @param string $param ZONES|STATES|COUNTRIES
-     * @param object $addr Address
+     * @param Address $addr Address
      * 
      * @return bool
      */
-    private function validateAddress(string $param, object $addr): bool
+    private function validateAddress(string $param, Address $addr): bool
     {
         $datas = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_'));
         foreach ($datas as $data) {
