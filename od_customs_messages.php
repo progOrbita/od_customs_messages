@@ -8,15 +8,12 @@ class Od_customs_messages extends Module
     public function __construct()
     {
         $this->name = 'od_customs_messages';
-        $this->tab = 'front_office_features';
         $this->version = '1.0.0';
         $this->author = 'Jose Barreiro';
-        $this->need_instance = 0;
         $this->ps_versions_compliancy = [
             'min' => '1.7.6.1',
             'max' => '1.7.9',
         ];
-        $this->bootstrap = true;
 
         parent::__construct();
 
