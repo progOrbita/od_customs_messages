@@ -46,7 +46,7 @@ class Od_customs_messages extends Module
         if(!$this->context->cart->id_address_delivery || !$this->context->cart->id_lang){
             return;
         }
-        
+
         $addr = new Address($this->context->cart->id_address_delivery, $this->context->cart->id_lang);
         if ($this->validateAddress('ZONES', $addr) || $this->validateAddress('COUNTRIES', $addr) || $this->validateAddress('STATES', $addr)) {
             $this->context->smarty->assign([
