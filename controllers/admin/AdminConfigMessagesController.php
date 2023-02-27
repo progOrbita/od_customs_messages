@@ -282,8 +282,6 @@ class AdminConfigMessagesController extends ModuleAdminController
                 }
 
                 break;
-            default:
-                break;
         }
 
         return $res;

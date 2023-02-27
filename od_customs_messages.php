@@ -85,8 +85,6 @@ class Od_customs_messages extends Module
                         return true;
                     }
                     break;
-                default:
-                    break;
             }
         }
 
