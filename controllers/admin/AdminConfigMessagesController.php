@@ -204,17 +204,17 @@ class AdminConfigMessagesController extends ModuleAdminController
         }
 
         $zone = $this->updateCheckBoxValue('ZONES');
-        if (!empty($zone) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zone)) {
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zone)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
         $states = $this->updateCheckBoxValue('STATES');
-        if (!empty($states) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)) {
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
         $countries = $this->updateCheckBoxValue('COUNTRIES');
-        if (!empty($countries) && !Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries)) {
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries)) {
             return $this->module->displayError($this->module->l('Error al actualizar los datos'));
         }
 
