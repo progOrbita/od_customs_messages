@@ -40,6 +40,10 @@ class AdminConfigMessagesController extends ModuleAdminController
      */
     public function displayForm(): string
     {
+        $zones = $this->getOptionsCheckBox('zone');
+        $countries = $this->getOptionsCheckBox('country');
+        $states = $this->getOptionsCheckBox('state');
+
         $form = [[
             'form' => [
                 'legend' => [
@@ -50,58 +54,13 @@ class AdminConfigMessagesController extends ModuleAdminController
                         'type' => 'textarea',
                         'label' => $this->module->l('Message:'),
                         'name' => '_OD_SEND_CUSTOMS_MESSAGES_',
-                        'autoload_rte' => true,
+                        // 'autoload_rte' => true, // No funciona al utilizarse <p>
                         'lang' => true,
                         'row' => 100,
                     ],
-                    [
-                        'type' => 'checkbox',
-                        'label'   => $this->module->l('Zones'),
-                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_ZONES_',
-                        'values' => [
-                            'query' => $this->getOptionsCheckBox('zone'),
-                            'id' => 'id',
-                            'name' => 'name'
-                        ],
-                        'expand' => [
-                            'print_total' => count($this->getOptionsCheckBox('zone')),
-                            'default' => 'show',
-                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
-                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
-                        ]
-                    ],
-                    [
-                        'type' => 'checkbox',
-                        'label'   => $this->module->l('Countries'),
-                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_',
-                        'values' => [
-                            'query' => $this->getOptionsCheckBox('country'),
-                            'id' => 'id',
-                            'name' => 'name'
-                        ],
-                        'expand' => [
-                            'print_total' => count($this->getOptionsCheckBox('country')),
-                            'default' => 'show',
-                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
-                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
-                        ]
-                    ],
-                    [
-                        'type' => 'checkbox',
-                        'label'   => $this->module->l('States'),
-                        'name' => '_OD_SEND_CUSTOMS_MESSAGES_STATES_',
-                        'values' => [
-                            'query' => $this->getOptionsCheckBox('state'),
-                            'id' => 'id',
-                            'name' => 'name'
-                        ],
-                        'expand' => [
-                            'print_total' => count($this->getOptionsCheckBox('state')),
-                            'default' => 'show',
-                            'show' => array('text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'),
-                            'hide' => array('text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt')
-                        ]
-                    ]
+                    $this->getCheckBoxField($this->module->l('Zones'), '_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zones),
+                    $this->getCheckBoxField($this->module->l('Countries'), '_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries),
+                    $this->getCheckBoxField($this->module->l('States'), '_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)
                 ],
                 'submit' => [
                     'title' => $this->module->l('Guardar'),
@@ -124,26 +83,48 @@ class AdminConfigMessagesController extends ModuleAdminController
     /**
      * Get fields values of helper form of configuration
      * 
+     * @param string label
+     * @param string name
+     * @param array data
+     * 
+     * @return array
+     */
+    private function getCheckBoxField(string $label, string $name, array $options): array
+    {
+        return [
+            'type' => 'checkbox',
+            'label'   => $label,
+            'name' => $name,
+            'values' => [
+                'query' => $options,
+                'id' => 'id',
+                'name' => 'name'
+            ],
+            'expand' => [
+                'print_total' => count($options),
+                'default' => 'show',
+                'show' => ['text' => $this->module->l('show'), 'icon' => 'plus-sign-alt'],
+                'hide' => ['text' => $this->module->l('hide'), 'icon' => 'minus-sign-alt']
+            ]
+        ];
+    }
+
+    /**
+     * Get fields values of helper form of configuration
+     * 
      * @return array
      */
     private function getFieldsValues(): array
     {
+        $data = [];
         foreach ($this->fields_values as $key => $value) {
             $data[$key] = Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', (int) $key, null, null, '');
         }
 
         $result['_OD_SEND_CUSTOMS_MESSAGES_'] = $data;
-        foreach ($this->getFieldsCheckBoxValue('ZONES') as $key => $value) {
-            $result[$key] = $value;
-        }
-
-        foreach ($this->getFieldsCheckBoxValue('STATES') as $key => $value) {
-            $result[$key] = $value;
-        }
-
-        foreach ($this->getFieldsCheckBoxValue('COUNTRIES') as $key => $value) {
-            $result[$key] = $value;
-        }
+        $this->getFieldsCheckBoxValue('ZONES', $result);
+        $this->getFieldsCheckBoxValue('STATES', $result);
+        $this->getFieldsCheckBoxValue('COUNTRIES', $result);
 
         return $result;
     }
@@ -155,13 +136,13 @@ class AdminConfigMessagesController extends ModuleAdminController
      * 
      * @return array
      */
-    private function getFieldsCheckBoxValue(string $param): array
+    private function getFieldsCheckBoxValue(string $param, &$field_values): array
     {
-        $data = Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_');
-        $data = explode(',', $data);
+        $data = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_', null, null, null, ''));
         $res = [];
         foreach ($data as $key) {
             $res['_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__' . $key] = true;
+            $field_values['_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__' . $key] = true;
         }
 
         return $res;
@@ -199,55 +180,50 @@ class AdminConfigMessagesController extends ModuleAdminController
             $this->fields_values[$key]['msg'] = $postData[$key];
         }
 
-        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_', $postData, true)) {
-            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_', $postData)) {
+            return $this->module->displayError($this->module->l('Error al actualizar los mensajes'));
         }
 
-        $zone = $this->updateCheckBoxValue('ZONES');
-        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_ZONES_', $zone)) {
-            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        if (!$this->updateCheckBoxValue('ZONES', '_OD_SEND_CUSTOMS_MESSAGES_ZONES_')) {
+            return $this->module->displayError($this->module->l('Error al actualizar las zonas'));
         }
 
-        $states = $this->updateCheckBoxValue('STATES');
-        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_STATES_', $states)) {
-            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        if (!$this->updateCheckBoxValue('STATES', '_OD_SEND_CUSTOMS_MESSAGES_STATES_')) {
+            return $this->module->displayError($this->module->l('Error al actualizar los estados'));
         }
 
-        $countries = $this->updateCheckBoxValue('COUNTRIES');
-        if (!Configuration::updateValue('_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_', $countries)) {
-            return $this->module->displayError($this->module->l('Error al actualizar los datos'));
+        if (!$this->updateCheckBoxValue('COUNTRIES', '_OD_SEND_CUSTOMS_MESSAGES_COUNTRIES_')) {
+            return $this->module->displayError($this->module->l('Error al actualizar los paises'));
         }
 
-        return $this->module->displayConfirmation($this->module->l('Actualización hecha correctamente'));
+        return $this->module->displayConfirmation($this->module->l('Actualización correcta'));
     }
 
     /**
      * function to get check box values of $_GET
      * 
      * @param string 'ZONES'|'STATES'|'COUNTRIES'
+     * @param string $key
      * 
      * @return string
      */
-    private function updateCheckBoxValue(string $param): string
+    private function updateCheckBoxValue(string $param, string $key): string
     {
-        $dataGet = Tools::getAllValues();
-        $data = '';
-        foreach ($dataGet as $key => $value) {
+        $data = [];
+        foreach (Tools::getAllValues() as $key => $value) {
             if (strpos($key, '_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__') === false) {
                 continue;
             }
 
             $len = strlen('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__');
-            $key = substr($key, $len);
-            $data .= $key . ',';
+            $data[] = substr($key, $len);
         }
 
-        $data = substr($data, 0, -1);
-        return $data;
+        return Configuration::updateValue($key, implode(',', $data));
     }
 
     /**
-     * create an array for options of the checkbox
+     * Get checkbox options
      * 
      * @param string
      * 
@@ -256,32 +232,25 @@ class AdminConfigMessagesController extends ModuleAdminController
     public function getOptionsCheckBox(string $param): array
     {
         $res = [];
+        $data = [];
+
         switch ($param) {
             case 'zone':
-                $zone = (Zone::getZones(true));
-                foreach ($zone as $key => $value) {
-                    $res[] = ['id' => $value['id_zone'], 'name' => $value['name']];
-                }
-
+                $data = Zone::getZones(true);
+                $key = 'id_zone';
                 break;
             case 'state':
-                $state = (State::getStatesByIdCountry(6));
-                foreach ($state as $key => $value) {
-                    $res[] = ['id' => $value['id_state'], 'name' => $value['name']];
-                }
-
+                $data = State::getStatesByIdCountry(6, true);
+                $key = 'id_state';
                 break;
             case 'country':
-                $country = (Country::getCountries($this->context->language->id, true));
-                foreach ($country as $key => $value) {
-                    if ($value['id_country'] == 6) {
-                        continue;
-                    }
-
-                    $res[] = ['id' => $value['id_country'], 'name' => $value['name']];
-                }
-
+                $data = Country::getCountries($this->context->language->id, true);
+                $key = 'id_country';
                 break;
+        }
+
+        foreach ($data as $key => $value) {
+            $res[] = ['id' => $value[$key], 'name' => $value['name']];
         }
 
         return $res;

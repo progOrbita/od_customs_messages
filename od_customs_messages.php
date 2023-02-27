@@ -24,7 +24,8 @@ class Od_customs_messages extends Module
 
     public function install(): bool
     {
-        return parent::install() && $this->registerHook('displayBeforeCarrier');
+        return parent::install()
+            && $this->registerHook('displayBeforeCarrier');
     }
 
     public function uninstall(): bool
@@ -43,14 +44,15 @@ class Od_customs_messages extends Module
 
     public function hookDisplayBeforeCarrier()
     {
-        if(!$this->context->cart->id_address_delivery || !$this->context->cart->id_lang){
-            return;
+        if ($this->context->cart->id_address_delivery < 1 || $this->context->cart->id_lang < 1) {
+            return '';
         }
-        
+
         $addr = new Address($this->context->cart->id_address_delivery, $this->context->cart->id_lang);
+
         if ($this->validateAddress('ZONES', $addr) || $this->validateAddress('COUNTRIES', $addr) || $this->validateAddress('STATES', $addr)) {
             $this->context->smarty->assign([
-                'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang)
+                'msg' => Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_', $this->context->cart->id_lang, null, null, '')
             ]);
 
             return $this->display(__FILE__, 'od_customs_messages.tpl');
@@ -61,27 +63,28 @@ class Od_customs_messages extends Module
      * function to validate fields of address
      * 
      * @param string $param ZONES|STATES|COUNTRIES
-     * @param Address $addr Address
+     * @param Address $addr
      * 
      * @return bool
      */
     private function validateAddress(string $param, Address $addr): bool
     {
-        $datas = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_'));
-        foreach ($datas as $data) {
+        $datas = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_', null, null, ''));
+
+        foreach ($datas as $id) {
             switch ($param) {
                 case 'ZONES':
-                    if ($data == $addr->getZoneById($addr->id)) {
+                    if ($id == $addr->getZoneById($addr->id)) {
                         return true;
                     }
                     break;
                 case 'COUNTRIES':
-                    if ($data == $addr->id_country) {
+                    if ($id == $addr->id_country) {
                         return true;
                     }
                     break;
                 case 'STATES':
-                    if ($data == $addr->id_state) {
+                    if ($id == $addr->id_state) {
                         return true;
                     }
                     break;
