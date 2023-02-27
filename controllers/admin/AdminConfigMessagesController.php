@@ -258,7 +258,7 @@ class AdminConfigMessagesController extends ModuleAdminController
         $res = [];
         switch ($param) {
             case 'zone':
-                $zone = (Zone::getZones());
+                $zone = (Zone::getZones(true));
                 foreach ($zone as $key => $value) {
                     $res[] = ['id' => $value['id_zone'], 'name' => $value['name']];
                 }
@@ -272,7 +272,7 @@ class AdminConfigMessagesController extends ModuleAdminController
 
                 break;
             case 'country':
-                $country = (Country::getCountries($this->context->language->id));
+                $country = (Country::getCountries($this->context->language->id, true));
                 foreach ($country as $key => $value) {
                     if ($value['id_country'] == 6) {
                         continue;
