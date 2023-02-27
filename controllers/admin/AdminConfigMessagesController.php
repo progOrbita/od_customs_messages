@@ -50,7 +50,7 @@ class AdminConfigMessagesController extends ModuleAdminController
                         'type' => 'textarea',
                         'label' => $this->module->l('Message:'),
                         'name' => '_OD_SEND_CUSTOMS_MESSAGES_',
-                        'autoload_rte' => true,
+                        // 'autoload_rte' => true,
                         'lang' => true,
                         'row' => 100,
                     ],
