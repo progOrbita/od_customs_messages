@@ -71,24 +71,22 @@ class Od_customs_messages extends Module
     {
         $datas = explode(',', Configuration::get('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '_', null, null, ''));
 
-        foreach ($datas as $id) {
-            switch ($param) {
-                case 'ZONES':
-                    if ($id == $addr->getZoneById($addr->id)) {
-                        return true;
-                    }
-                    break;
-                case 'COUNTRIES':
-                    if ($id == $addr->id_country) {
-                        return true;
-                    }
-                    break;
-                case 'STATES':
-                    if ($id == $addr->id_state) {
-                        return true;
-                    }
-                    break;
-            }
+        switch ($param) {
+            case 'ZONES':
+                if (in_array($addr->getZoneById($addr->id), $datas)) {
+                    return true;
+                }
+                break;
+            case 'COUNTRIES':
+                if (in_array($addr->id_country, $datas)) {
+                    return true;
+                }
+                break;
+            case 'STATES':
+                if (in_array($addr->id_state, $datas)) {
+                    return true;
+                }
+                break;
         }
 
         return false;
