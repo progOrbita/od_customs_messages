@@ -211,13 +211,13 @@ class AdminConfigMessagesController extends ModuleAdminController
     private function updateCheckBoxValue(string $param, string $key): bool
     {
         $data = [];
-        foreach (Tools::getAllValues() as $key => $value) {
-            if (strpos($key, '_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__') === false) {
+        foreach (Tools::getAllValues() as $keys => $value) {
+            if (strpos($keys, '_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__') === false) {
                 continue;
             }
 
             $len = strlen('_OD_SEND_CUSTOMS_MESSAGES_' . $param . '__');
-            $data[] = substr($key, $len);
+            $data[] = substr($keys, $len);
         }
 
         return (bool)Configuration::updateValue($key, implode(',', $data));
@@ -250,7 +250,7 @@ class AdminConfigMessagesController extends ModuleAdminController
                 break;
         }
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $keys => $value) {
             $res[] = ['id' => $value[$key], 'name' => $value['name']];
         }
 
