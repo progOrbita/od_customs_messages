@@ -206,9 +206,9 @@ class AdminConfigMessagesController extends ModuleAdminController
      * @param string 'ZONES'|'STATES'|'COUNTRIES'
      * @param string $key
      * 
-     * @return string
+     * @return bool
      */
-    private function updateCheckBoxValue(string $param, string $key): string
+    private function updateCheckBoxValue(string $param, string $key): bool
     {
         $data = [];
         foreach (Tools::getAllValues() as $key => $value) {
@@ -220,7 +220,7 @@ class AdminConfigMessagesController extends ModuleAdminController
             $data[] = substr($key, $len);
         }
 
-        return Configuration::updateValue($key, implode(',', $data));
+        return (bool)Configuration::updateValue($key, implode(',', $data));
     }
 
     /**
